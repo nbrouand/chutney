@@ -1,0 +1,31 @@
+<div class="mat-elevation-z8">
+  <chutney-page-header [title]="'Environments'" [breadcrumbs]="breadcrumbs">
+  </chutney-page-header>
+
+  <div fxLayout="column" fxLayoutGap="1em">
+    <mat-form-field appearance="fill" fxFlex="none">
+      <mat-label>Choose your environment</mat-label>
+      <mat-select [formControl]="envControl" required>
+        <header>
+          <button mat-icon-button (click)="createEnvironmentEvent()">
+            <mat-icon class="material-icons-outlined">create</mat-icon>
+            Create new environment
+          </button>
+        </header>
+        <mat-option *ngFor="let env of environments$ | async" [value]="env">
+          {{env.name}}
+        </mat-option>
+      </mat-select>
+
+      <mat-hint>{{envControl.value?.description}}</mat-hint>
+    </mat-form-field>
+
+    <div *ngIf="envControl.value" flex>
+      <chutney-targets-list [targets]="envControl.value.targets"></chutney-targets-list>
+    </div>
+
+  </div>
+</div>
+
+
+

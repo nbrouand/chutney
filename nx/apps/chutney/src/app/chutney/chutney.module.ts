@@ -1,14 +1,10 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { ChutneyComponent } from './chutney.component';
 import { RouterModule } from '@angular/router';
-import { FeatureAuthModule, authRoutes } from '@chutney/feature-auth';
-import { UiLayoutModule } from '@chutney/ui-layout';
-import { AuthGuard } from '@chutney/feature-auth';
+import { AuthGuard, authRoutes, FeatureAuthModule } from '@chutney/feature-auth';
+import { AuthLayoutComponent, MainLayoutComponent, UiLayoutModule } from '@chutney/ui-layout';
 import { CommonModule } from '@angular/common';
-import { AuthLayoutComponent } from '@chutney/ui-layout';
-import { MainLayoutComponent } from '@chutney/ui-layout';
 
 @NgModule({
   declarations: [ChutneyComponent],
@@ -20,12 +16,19 @@ import { MainLayoutComponent } from '@chutney/ui-layout';
         component: MainLayoutComponent,
         canActivate: [AuthGuard],
         children: [
-          { path: '', redirectTo: 'scenarios', pathMatch: 'full' },
+          {path: '', redirectTo: 'scenarios', pathMatch: 'full'},
           {
             path: 'scenarios',
             loadChildren: () =>
               import('@chutney/feature-scenarios').then(
                 (module) => module.FeatureScenariosModule
+              ),
+          },
+          {
+            path: 'environments',
+            loadChildren: () =>
+              import('@chutney/feature-environments').then(
+                (module) => module.FeatureEnvironmentsModule
               ),
           },
         ],
@@ -35,7 +38,7 @@ import { MainLayoutComponent } from '@chutney/ui-layout';
         component: AuthLayoutComponent,
         children: authRoutes,
       },
-      { path: '**', redirectTo: 'scenarios' },
+      {path: '**', redirectTo: 'scenarios'},
     ]),
     UiLayoutModule,
     FeatureAuthModule,
@@ -44,4 +47,5 @@ import { MainLayoutComponent } from '@chutney/ui-layout';
   providers: [],
   exports: [CommonModule],
 })
-export class ChutneyModule {}
+export class ChutneyModule {
+}

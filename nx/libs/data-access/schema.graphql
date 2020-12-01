@@ -50,12 +50,41 @@ type ScenariosFilter {
   advanced: Boolean
 }
 
+type Environment {
+  name: String
+  description: String
+  targets: [Target!]
+}
+
+input EnvironmentInput {
+  name: String!
+  description: String!
+}
+
+type Target {
+  name: String
+  url: String
+  properties: [Entry!]
+  username: String
+  password: String
+  keyStore: String
+  keyStorePassword: String
+  privateKey: String
+}
+
+type Entry {
+  key: String
+  value: String
+}
+
 type Query {
   user: User
   scenarios: [Scenario]
   scenariosFilter: ScenariosFilter
   scenario(scenarioId: ID!): Scenario
   runScenarioHistory(scenarioId: ID!, executionId: ID!): ScenarioExecution!
+  environments: [Environment]
+  environment(envName: String!) :Environment
 }
 
 type Mutation {
@@ -63,6 +92,7 @@ type Mutation {
   saveScenario(input: ScenarioInput!): Boolean
   deleteScenario(input: ID!): Boolean
   runScenario(scenarioId: ID!, dataset: [String] ) : ID!
+  updateEnvironment(originalName: String, input: EnvironmentInput): Boolean
 }
 
 scalar RestFunction

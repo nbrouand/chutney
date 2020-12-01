@@ -1,0 +1,6 @@
+query environment($envName: String!){
+  environment(envName: $envName) @rest(type: "Environment", path: "api/v2/environment/{args.envName}"){
+    name
+    description
+  }
+}
